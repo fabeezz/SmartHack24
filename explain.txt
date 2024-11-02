@@ -1,0 +1,59 @@
+To tackle this challenge, you'll mainly need to write code that interacts with the provided API and implements a strategy to optimize fuel delivery, balancing costs and CO₂ emissions while minimizing penalties. Here's how to start:
+
+1. Set Up Your Environment
+Install Java 17 and Maven if they aren’t already installed, as the backend is built using Spring Boot.
+Clone the repository and open the project in an IDE like IntelliJ IDEA or VS Code.
+Start the backend locally to test your code, using:
+bash
+Copiază codul
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+Set up a REST client (like Postman or Bruno) to manually test API endpoints, especially if you’re new to the API and want to explore its behavior.
+2. Understand API Requests and Responses
+Explore the Swagger UI (http://localhost:8080/swagger-ui.html) for documentation on API endpoints. This shows you the structure of requests and responses, like how to start sessions and send movements.
+Session Management: The game starts at day 0. You’ll use the API to start a session and send fuel movement data each day.
+Daily Movement: At each “day” in the game, you’ll make decisions about fuel transportation and storage, and send these to the backend.
+3. Write Code to Send Requests
+Set Up API Calls: Use a library like HTTPClient in Java, requests in Python, or Axios in JavaScript to send POST requests with the required headers and data.
+Start the Session: Begin by writing code to initialize a session:
+java
+Copiază codul
+HttpResponse<String> response = client.send(
+  HttpRequest.newBuilder()
+    .uri(URI.create("http://localhost:8080/api/v1/session/start"))
+    .header("API-KEY", "7bcd6334-bc2e-4cbf-b9d4-61cb9e868869")
+    .POST(HttpRequest.BodyPublishers.noBody())
+    .build(),
+  HttpResponse.BodyHandlers.ofString()
+);
+4. Implement a Strategy for Fuel Movements
+Design an Algorithm to manage and optimize fuel deliveries.
+Analyze Requirements: Each round, decide how much fuel to send, from where to where, and by what method (pipeline or truck).
+Constraints: Respect capacity limits and delivery windows to avoid penalties.
+Optimization: Focus on routes, timing, and method to reduce costs and emissions.
+Example Code for Daily Movement:
+java
+Copiază codul
+Map<String, Object> movements = new HashMap<>();
+movements.put("source", "refinery1");
+movements.put("destination", "storage1");
+movements.put("amount", 500);
+
+HttpResponse<String> moveResponse = client.send(
+  HttpRequest.newBuilder()
+    .uri(URI.create("http://localhost:8080/api/v1/movements"))
+    .header("API-KEY", "7bcd6334-bc2e-4cbf-b9d4-61cb9e868869")
+    .POST(HttpRequest.BodyPublishers.ofString(new Gson().toJson(movements)))
+    .build(),
+  HttpResponse.BodyHandlers.ofString()
+);
+5. Review Responses and Adjust Strategy
+The API response will provide cost and CO₂ KPIs along with penalties for each day. Use this information to refine your approach.
+Example Adjustments:
+If you’re penalized for exceeding storage capacity, adjust movement quantities or delivery timing.
+If CO₂ emissions are too high, prioritize routes or methods with lower emissions.
+6. Loop Through Days and Finalize
+Repeat the API calls each day, updating movements based on KPIs and penalties.
+Continue until you reach the 42nd day or end the session when testing.
+7. Run and Test Locally
+Test your solution repeatedly to tune it before the "battle mode."
+With this setup, you’re ready to start coding an efficient solution for the hackathon! Let me know if you'd like help with specific functions, algorithms, or API handling!
