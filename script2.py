@@ -5,11 +5,11 @@ import json
 api_endpoint = "http://localhost:8080/api/v1/play/round"
 
 # Define your session ID and API ID
-session_id = "8bcd68e4-9936-46b4-a598-09f099dfa9d1"
+session_id = "0353f4cf-ddcb-496b-bdb9-1b41e05c8209"
 api_key = "7bcd6334-bc2e-4cbf-b9d4-61cb9e868869"
 
 # Load movements data from file
-with open('movements1.txt', 'r') as file:
+with open('movements13.txt', 'r') as file:
     movements_data = json.load(file)
 
 # Iterate over each day from 0 to 42
